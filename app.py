@@ -23,7 +23,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-
+# Creating a Click group for the command-line interface
 @click.group()
 def cli():
    """WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE."""
@@ -60,6 +60,7 @@ def initdb():
     Base.metadata.create_all(bind=engine)
     click.echo(click.style(f'Initialized the database.', fg='green'))
 
+# Command to add a ward
 @cli.command()
 @click.argument('name')
 def add_ward(name):
@@ -69,6 +70,7 @@ def add_ward(name):
     session.commit()
     click.echo(click.style(f'Ward {name} added successfully.', fg='green'))
 
+# Command to list wards
 @cli.command()
 def list_wards():
     """List all wards."""
@@ -84,7 +86,7 @@ def list_wards():
 
     click.echo(click.style(tabulate_module(ward_data, headers=headers, tablefmt="grid"), fg='green'))
 
-
+# Command to add a doctor
 @cli.command()
 @click.argument('name')
 @click.argument('age', type=int)
@@ -95,6 +97,7 @@ def add_doctor(name, age):
     session.commit()
     click.echo(click.style(f'Doctor {name} added successfully.', fg='green'))
 
+# Command to list wards
 @cli.command()
 def list_doctors():
     """List all doctors."""
@@ -109,6 +112,8 @@ def list_doctors():
     ]
 
     click.echo(click.style(tabulate_module(doctor_data, headers=headers, tablefmt="grid"), fg='green'))
+
+    # Command to add a nurse
 @cli.command()
 @click.argument('name')
 @click.argument('age', type=int)
@@ -127,6 +132,8 @@ def add_nurse(name, age, ward):
     session.commit()
     click.echo(click.style(f'Nurse {name} added successfully.', fg='green'))
 
+
+# Command to list nurses
 @cli.command()
 def list_nurses():
     """List all nurses."""
@@ -141,6 +148,8 @@ def list_nurses():
     ]
 
     click.echo(click.style(tabulate_module(nurse_data, headers=headers, tablefmt="grid"), fg='green'))
+
+    # Command to add a patient
 @cli.command()
 @click.argument('name')
 @click.argument('age', type=int)
@@ -172,6 +181,7 @@ def add_patient(name, age, sex, drugs, ward, diagnosis, nurse):
     session.commit()
     click.echo(click.style(f'Patient {name} added successfully.', fg='green'))
 
+    # Command to list patients
 @cli.command()
 def list_patients():
     """List all patients."""
@@ -190,7 +200,7 @@ def list_patients():
 
 
 
-
+# Command to list all patients in a ward
 @cli.command()
 @click.argument('ward')
 def list_patients_in_ward(ward):
@@ -216,6 +226,7 @@ def list_patients_in_ward(ward):
 
     click.echo(click.style(tabulate_module(patient_data, headers=headers, tablefmt="grid"), fg='green'))
 
+    # Command to search for a patient
 @cli.command()
 @click.argument('name')
 def search_patient(name):
@@ -253,11 +264,11 @@ def search_patient(name):
         click.echo(click.style(tabulate_function(nurse_data, headers=headers, tablefmt="grid"), fg='green'))
 
 
-
+# Command to discharge a patient
 @cli.command()
 @click.argument('patient_name')
 def delete_patient(patient_name):
-    """Delete a patient by name."""
+    """Discharge a patient by name."""
     patient = session.query(Patient).filter_by(name=patient_name).first()
 
     if not patient:
@@ -266,9 +277,9 @@ def delete_patient(patient_name):
 
     session.delete(patient)
     session.commit()
-    click.echo(click.style(f'Patient with name {patient_name} deleted successfully.', fg='green'))
+    click.echo(click.style(f'Patient with name {patient_name} discharged successfully.', fg='green'))
 
-
+# Command to delete a nurse
 @cli.command()
 @click.argument('nurse_name')
 def delete_nurse(nurse_name):
@@ -283,7 +294,7 @@ def delete_nurse(nurse_name):
     session.commit()
     click.echo(click.style(f'Nurse with name {nurse_name} deleted successfully.', fg='green'))
 
-
+# Command to delete a doctor
 @cli.command()
 @click.argument('doctor_name')
 def delete_doctor(doctor_name):

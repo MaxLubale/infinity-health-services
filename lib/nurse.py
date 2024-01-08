@@ -9,6 +9,7 @@ class Nurse(Base):
     name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
     ward_id = Column(Integer, ForeignKey('wards.id'), nullable=False)
-
+    
+    # Define relationships
     ward = relationship("Ward", back_populates="nurses")
     patients = relationship("Patient", back_populates="nurse") 

@@ -9,5 +9,5 @@ class Doctor(Base):
     name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
 
-    wards = relationship("Ward", back_populates="doctor")
+   
 
