@@ -1,3 +1,4 @@
+import logging
 import click
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,11 +9,12 @@ from lib.doctor import Doctor
 from lib.nurse import Nurse
 from lib.patient import Patient
 from lib.ward import Ward
-import logging
-
 
 # Configure the logging level for SQLAlchemy
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING) 
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
+
+# Set the root logger level to WARNING to suppress other log messages
+logging.getLogger().setLevel(logging.WARNING)
 
 # Create the engine
 DATABASE_URL = "sqlite:///infinity_health.db"
@@ -31,6 +33,9 @@ session = DBSession()
 def cli():
         """WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE."""
 click.echo(click.style('\nWELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE.\n', fg='green'))
+
+print(logging.getLogger().handlers)
+print(logging.getLogger().getEffectiveLevel())
 
 # Command to Initialize the database.
 
