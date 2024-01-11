@@ -11,10 +11,10 @@ from lib.patient import Patient
 from lib.ward import Ward
 
 # Configure the logging level for SQLAlchemy
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 # Set the root logger level to WARNING to suppress other log messages
-logging.getLogger().setLevel(logging.WARNING)
+logging.getLogger().setLevel(logging.INFO)
 
 # Create the engine
 DATABASE_URL = "sqlite:///infinity_health.db"
