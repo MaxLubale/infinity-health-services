@@ -8,7 +8,7 @@ To use Infinity Health Services, follow the instructions below.
 
 ### Prerequisites
 
-- Python 3.x
+- Python 3.9
 - SQLAlchemy
 
 ### Installation

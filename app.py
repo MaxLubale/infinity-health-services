@@ -10,6 +10,10 @@ from lib.patient import Patient
 from lib.ward import Ward
 import logging
 
+
+# Configure the logging level for SQLAlchemy
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING) 
+
 # Create the engine
 DATABASE_URL = "sqlite:///infinity_health.db"
 engine = create_engine(DATABASE_URL, echo=True)
@@ -21,13 +25,12 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Configure the logging level for SQLAlchemy
-logging.getLogger('sqlalchemy.engine').setLevel(logging.CRITICAL)
+
 
 @click.group()
 def cli():
         """WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE."""
-click.echo(click.style('WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE.', fg='green'))
+click.echo(click.style('\nWELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE.\n', fg='green'))
 
 # Command to Initialize the database.
 
@@ -287,7 +290,7 @@ def delete_doctor(doctor_name):
 
 if __name__ == '__main__':
     while True:
-    
+        print("\n" + "="*58 + "\n")
         print("\nChoose an option:")
         print("1. Initialize the database")
         print("2. Add a ward")
@@ -356,6 +359,9 @@ if __name__ == '__main__':
             delete_doctor(doctor_name)
         elif choice == '15':
             print("\nGOODBYE!\n")
+            print("\n" + "="*58 + "\n")
             break
         else:
             print("Invalid choice. Please enter a valid number.")
+
+
