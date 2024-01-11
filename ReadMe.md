@@ -43,11 +43,11 @@ To use Infinity Health Services, follow the instructions below.
     - press option 5
  * Add a patient:
 
-   - press option 8: --name "Harry Styles" --age 35 --sex "Male" --drugs "Aspirin, Ibuprofen" --ward "St Luke" --diagnosis "Heart Disease"
+   - press option 8: Name: Harry Styles    Age: 35   Sex: Male   Drugs: Aspirin, Ibuprofen  Ward: St Luke   Diagnosis: Heart Disease
 
  * Search for a specific patient:
 
-   - press option 11: search-patient "Harry Styles"
+   - press option 11: search-patient Nmae: Harry Styles
    
  * Note
    - Replace python3 with your specific Python version.
