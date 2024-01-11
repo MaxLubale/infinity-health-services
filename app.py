@@ -1,5 +1,4 @@
 import click
-import tabulate 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from tabulate import tabulate as tabulate_module 
@@ -9,8 +8,7 @@ from lib.doctor import Doctor
 from lib.nurse import Nurse
 from lib.patient import Patient
 from lib.ward import Ward
-
-
+import logging
 
 # Create the engine
 DATABASE_URL = "sqlite:///infinity_health.db"
@@ -23,45 +21,23 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Creating a Click group for the command-line interface
+# Configure the logging level for SQLAlchemy
+logging.getLogger('sqlalchemy.engine').setLevel(logging.CRITICAL)
+
 @click.group()
 def cli():
-   """WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE."""
-    
+        """WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE."""
+click.echo(click.style('WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE.', fg='green'))
 
+# Command to Initialize the database.
 
-    
-
-def print_table(records, headers):
-    rows = []
-    for record in records:
-        row_data = []
-        for header in headers:
-            if header.lower() == 'id':
-                value = getattr(record, 'id', '')
-            elif header.lower() == 'ward':
-                
-                ward_obj = getattr(record, 'ward', None)
-                value = getattr(ward_obj, 'name', '') if ward_obj else ''
-            elif hasattr(record, header.lower()):
-                value = getattr(record, header.lower())
-            else:
-                value = ''
-            row_data.append(value)
-
-        rows.append(row_data)
-
-    click.echo(tabulate.tabulate(rows, headers, tablefmt="grid"))
-  
-
-@cli.command()
 def initdb():
     """Initialize the database."""
     Base.metadata.create_all(bind=engine)
     click.echo(click.style(f'Initialized the database.', fg='green'))
 
 # Command to add a ward
-@cli.command()
+
 @click.argument('name')
 def add_ward(name):
     """Add a ward."""
@@ -71,7 +47,7 @@ def add_ward(name):
     click.echo(click.style(f'Ward {name} added successfully.', fg='green'))
 
 # Command to list wards
-@cli.command()
+
 def list_wards():
     """List all wards."""
     headers = ["ID", "Name"]
@@ -87,7 +63,7 @@ def list_wards():
     click.echo(click.style(tabulate_module(ward_data, headers=headers, tablefmt="grid"), fg='green'))
 
 # Command to add a doctor
-@cli.command()
+
 @click.argument('name')
 @click.argument('age', type=int)
 def add_doctor(name, age):
@@ -98,7 +74,7 @@ def add_doctor(name, age):
     click.echo(click.style(f'Doctor {name} added successfully.', fg='green'))
 
 # Command to list wards
-@cli.command()
+
 def list_doctors():
     """List all doctors."""
     headers = ["ID", "Name", "Age"]
@@ -114,7 +90,7 @@ def list_doctors():
     click.echo(click.style(tabulate_module(doctor_data, headers=headers, tablefmt="grid"), fg='green'))
 
     # Command to add a nurse
-@cli.command()
+
 @click.argument('name')
 @click.argument('age', type=int)
 @click.argument('ward')
@@ -134,7 +110,7 @@ def add_nurse(name, age, ward):
 
 
 # Command to list nurses
-@cli.command()
+
 def list_nurses():
     """List all nurses."""
     headers = ["Name", "ID", "Age", "Ward"]
@@ -150,7 +126,7 @@ def list_nurses():
     click.echo(click.style(tabulate_module(nurse_data, headers=headers, tablefmt="grid"), fg='green'))
 
     # Command to add a patient
-@cli.command()
+
 @click.argument('name')
 @click.argument('age', type=int)
 @click.argument('sex')
@@ -182,7 +158,7 @@ def add_patient(name, age, sex, drugs, ward, diagnosis, nurse):
     click.echo(click.style(f'Patient {name} added successfully.', fg='green'))
 
     # Command to list patients
-@cli.command()
+
 def list_patients():
     """List all patients."""
     headers = ["ID", "Name", "Age", "Sex", "Drugs", "Ward", "Diagnosis", "Nurse"]
@@ -201,7 +177,7 @@ def list_patients():
 
 
 # Command to list all patients in a ward
-@cli.command()
+
 @click.argument('ward')
 def list_patients_in_ward(ward):
     """List all patients in a ward showing their names and nurses."""
@@ -227,7 +203,7 @@ def list_patients_in_ward(ward):
     click.echo(click.style(tabulate_module(patient_data, headers=headers, tablefmt="grid"), fg='green'))
 
     # Command to search for a patient
-@cli.command()
+
 @click.argument('name')
 def search_patient(name):
     """Search for a specific patient by name."""
@@ -265,7 +241,7 @@ def search_patient(name):
 
 
 # Command to discharge a patient
-@cli.command()
+
 @click.argument('patient_name')
 def delete_patient(patient_name):
     """Discharge a patient by name."""
@@ -280,7 +256,7 @@ def delete_patient(patient_name):
     click.echo(click.style(f'Patient with name {patient_name} discharged successfully.', fg='green'))
 
 # Command to delete a nurse
-@cli.command()
+
 @click.argument('nurse_name')
 def delete_nurse(nurse_name):
     """Delete a nurse by name."""
@@ -295,7 +271,7 @@ def delete_nurse(nurse_name):
     click.echo(click.style(f'Nurse with name {nurse_name} deleted successfully.', fg='green'))
 
 # Command to delete a doctor
-@cli.command()
+
 @click.argument('doctor_name')
 def delete_doctor(doctor_name):
     """Delete a doctor by name."""
@@ -309,7 +285,77 @@ def delete_doctor(doctor_name):
     session.commit()
     click.echo(click.style(f'Doctor with name {doctor_name} deleted successfully.', fg='green'))
 
-
 if __name__ == '__main__':
-    cli()
+    while True:
     
+        print("\nChoose an option:")
+        print("1. Initialize the database")
+        print("2. Add a ward")
+        print("3. List all wards")
+        print("4. Add a doctor")
+        print("5. List all doctors")
+        print("6. Add a nurse")
+        print("7. List all nurses")
+        print("8. Add a patient")
+        print("9. List all patients")
+        print("10. List all patients in a ward")
+        print("11. Search for a patient")
+        print("12. Discharge a patient")
+        print("13. Delete a nurse")
+        print("14. Delete a doctor")
+        print("15. Quit")
+
+        choice = input("Enter the number of your choice: ")
+
+        if choice == '1':
+            Base.metadata.create_all(bind=engine)
+            print('Initialized the database.')
+        elif choice == '2':
+            name = input("Enter the ward name: ")
+            add_ward(name)
+        elif choice == '3':
+            list_wards()
+        elif choice == '4':
+            name = input("Enter the doctor name: ")
+            age = input("Enter the doctor age: ")
+            add_doctor(name, age)
+        elif choice == '5':
+            list_doctors()
+        elif choice == '6':
+            name = input("Enter the nurse name: ")
+            age = input("Enter the nurse age: ")
+            ward = input("Enter the ward name: ")
+            add_nurse(name, age, ward)
+        elif choice == '7':
+            list_nurses()
+        elif choice == '8':
+            name = input("Enter the patient name: ")
+            age = input("Enter the patient age: ")
+            sex = input("Enter the patient sex: ")
+            drugs = input("Enter the patient drugs: ")
+            ward = input("Enter the ward name: ")
+            diagnosis = input("Enter the patient diagnosis: ")
+            nurse = input("Enter the nurse name: ")
+            add_patient(name, age, sex, drugs, ward, diagnosis, nurse)
+        elif choice == '9':
+            list_patients()
+        elif choice == '10':
+            ward = input("Enter the ward name: ")
+            list_patients_in_ward(ward)
+        elif choice == '11':
+            name = input("Enter the patient name: ")
+            search_patient(name)
+        elif choice == '12':
+            patient_name = input("Enter the patient name to discharge: ")
+            delete_patient(patient_name)
+        elif choice == '13':
+            nurse_name = input("Enter the nurse name to delete: ")
+            delete_nurse(nurse_name)
+        elif choice == '14':
+            doctor_name = input("Enter the doctor name to delete: ")
+            delete_doctor(doctor_name)
+        elif choice == '15':
+            print("\nGOODBYE!\n")
+            break
+        else:
+            print("Invalid choice. Please enter a valid number.")
