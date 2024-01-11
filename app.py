@@ -2,7 +2,7 @@ import logging
 import click
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from tabulate import tabulate as tabulate_module 
+from tabulate import tabulate as tabulate_module
 from tabulate import tabulate as tabulate_function
 from lib.base import Base
 from lib.doctor import Doctor
