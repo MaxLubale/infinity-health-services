@@ -34,8 +34,6 @@ def cli():
         """WELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE."""
 click.echo(click.style('\nWELCOME TO INFINITY HEALTH SERVICES COMMAND-LINE INTERFACE.\n', fg='green'))
 
-print(logging.getLogger().handlers)
-print(logging.getLogger().getEffectiveLevel())
 
 # Command to Initialize the database.
 
